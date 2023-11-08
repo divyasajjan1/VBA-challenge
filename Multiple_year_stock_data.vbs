@@ -36,13 +36,19 @@ Sub multiple_year_stock_data()
                 closePrice = ws.Cells(i, 6).Value
                 yearlyChange = closePrice - openPrice
                 ws.Cells(stockRow, 10).Value = yearlyChange
+
+                if(yearlyChange >= 0) Then
+                    ws.Cells(stockRow, 10).Interior.ColorIndex = 4
+                Else
+                    ws.Cells(stockRow, 10).Interior.ColorIndex = 3
+                End If
                 
                 If (openPrice <> 0) Then
                     percentChange = yearlyChange / openPrice
                 Else
                     percentChange = 0
                 End If
-                ws.Cells(stockRow, 11).Value = percentChange
+                ws.Cells(stockRow, 11).Value = Format(percentChange, "0.00%")
                 ws.Cells(stockRow, 12).Value = totalVolume + ws.Cells(i, 7).Value
                 
                 
@@ -77,8 +83,8 @@ Sub multiple_year_stock_data()
         maxPercentDecrease = WorksheetFunction.Min(ws.Range("K:K"))
         maxTotalVolume = WorksheetFunction.Max(ws.Range("L:L"))
         
-        ws.Range("Q2").Value = maxPercentIncrease
-        ws.Range("Q3").Value = maxPercentDecrease
+        ws.Range("Q2").Value = Format(maxPercentIncrease, "0.00%")
+        ws.Range("Q3").Value = Format(maxPercentDecrease, "0.00%")
         ws.Range("Q4").Value = maxTotalVolume
         
         For j = 2 To stockRowEnd
